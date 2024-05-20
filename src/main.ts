@@ -1,7 +1,9 @@
 import app from '../src/infra/server';
-import TestController from './infra/http/api/TestController';
+import LoginController from './infra/http/api/LoginController';
+import UserController from './infra/http/api/UserController';
 
-new TestController();
+new UserController();
+new LoginController();
 
 app.listen(3001, () => {
     return console.log(`Express is listening at http://localhost:3001`);

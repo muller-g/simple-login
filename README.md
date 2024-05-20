@@ -1,3 +1,3 @@
-## Template Service
+## Simple login
 
-Pré configuration of node server using classes.
+A simple user registration and login with jwt token and postgresql as database.
