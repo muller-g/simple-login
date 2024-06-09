@@ -3,6 +3,7 @@ import app from '../../server';
 import User from '../../../entity/User';
 import UserService from '../service/UserService';
 import EnsureUserToken from '../middleware/EnsureUserToken';
+import logger from '../../../service/WinstonLogger';
 
 export default class UserController {
     constructor() {
@@ -10,20 +11,30 @@ export default class UserController {
     }
 
     private initializeRoutes() {
-        app.post("/users", async (req: Request, res: Response) => {
-            const { name, email, password, phone } = req.body;
-            const user: User = await User.createUser(
-                name,
-                email,
-                phone,
-                password
-            );
+        logger.info("User routes start");
 
-            res.status(200).json(await UserService.create(user));
+        app.post("/users", async (req: Request, res: Response) => {
+            try {
+                const { name, email, password, phone } = req.body;
+                const user: User = await User.createUser(
+                    name,
+                    email,
+                    phone,
+                    password
+                );
+    
+                return res.status(200).json(await UserService.create(user));
+            } catch(e){
+                return res.status(500).json("Error");
+            }
         });
 
         app.get("/users", EnsureUserToken.validate, async (req: Request, res: Response) => {
-            res.status(200).json(await UserService.get());
+            try {
+                return res.status(200).json(await UserService.get());
+            } catch(e){
+                return res.status(500).json("Error");
+            } 
         });
     }
 }
